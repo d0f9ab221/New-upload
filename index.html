@@ -1,241 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PREMIUM UPLOADER | CS TOOL</title>
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --card-bg: #111111;
-      --accent: #ffffff;
-      --text-dim: #888888;
-      --border: #222222;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS TOOL PRO | V3.0</title>
+    <style>
+        :root {
+            --bg: #000000;
+            --accent: #ffffff;
+            --gray: #1a1a1a;
+            --text-dim: #666;
+        }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg);
-      color: var(--accent);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
+        body {
+            margin: 0; font-family: 'Segoe UI', sans-serif;
+            background: var(--bg); color: var(--accent);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
 
-    /* Background aesthetic circles */
-    .bg-glow {
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
-      z-index: -1;
-    }
+        .vip-card {
+            width: 90%; max-width: 450px; background: #050505;
+            border: 1px solid #222; padding: 40px; border-radius: 4px;
+            box-shadow: 0 0 40px rgba(255,255,255,0.03);
+        }
 
-    .container {
-      width: 90%;
-      max-width: 420px;
-      padding: 40px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 2px; /* Sharp professional look */
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      transition: all 0.3s ease;
-    }
+        .header { text-align: center; margin-bottom: 35px; }
+        .header h1 { letter-spacing: 8px; font-weight: 200; margin: 0; font-size: 24px; }
+        .header p { color: var(--text-dim); font-size: 10px; letter-spacing: 3px; margin-top: 10px; }
 
-    h2 {
-      font-size: 1.5rem;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      font-weight: 300;
-    }
+        .upload-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        
+        .opt-btn {
+            background: transparent; border: 1px solid #333; color: #fff;
+            padding: 15px 10px; cursor: pointer; transition: 0.3s;
+            font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .opt-btn:hover { border-color: #fff; }
+        .opt-btn.active { background: #fff; color: #000; border-color: #fff; }
 
-    p.subtitle {
-      color: var(--text-dim);
-      font-size: 0.8rem;
-      margin-bottom: 40px;
-      letter-spacing: 1px;
-    }
+        /* Progress Section */
+        .progress-container { margin: 20px 0; display: none; }
+        .progress-bar { width: 100%; height: 2px; background: #111; position: relative; }
+        .progress-fill { width: 0%; height: 100%; background: #fff; transition: 0.2s; box-shadow: 0 0 10px #fff; }
+        .progress-text { font-size: 10px; color: var(--text-dim); margin-top: 8px; display: flex; justify-content: space-between; }
 
-    .upload-area {
-      position: relative;
-      margin-bottom: 30px;
-    }
+        .main-action-btn {
+            width: 100%; padding: 20px; background: #fff; color: #000;
+            border: none; font-weight: 800; cursor: pointer;
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.4s;
+        }
+        .main-action-btn:hover { background: #ccc; transform: scale(1.01); }
+        .main-action-btn:disabled { background: #111; color: #333; cursor: not-allowed; }
 
-    input[type="file"] {
-      display: none;
-    }
+        #result-area { margin-top: 30px; display: none; border-top: 1px solid #222; padding-top: 20px; }
+        .link-box {
+            background: #0a0a0a; border: 1px solid #222; padding: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .link-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: #888; flex: 1; }
+        .copy-btn { background: #fff; color: #000; border: none; padding: 8px 15px; font-size: 10px; font-weight: bold; cursor: pointer; margin-left: 10px; }
 
-    .file-label {
-      display: block;
-      padding: 20px;
-      border: 1px dashed var(--border);
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: 0.3s;
-      font-size: 0.9rem;
-    }
-
-    .file-label:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    button {
-      width: 100%;
-      padding: 18px;
-      background: var(--accent);
-      color: #000;
-      border: none;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-size: 0.85rem;
-    }
-
-    button:hover {
-      background: #cccccc;
-      letter-spacing: 3px;
-    }
-
-    button:disabled {
-      background: #333;
-      color: #666;
-      cursor: not-allowed;
-    }
-
-    #status {
-      margin-top: 25px;
-      font-size: 0.85rem;
-      min-height: 20px;
-    }
-
-    .success-link {
-      display: inline-block;
-      margin-top: 15px;
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-      padding-bottom: 2px;
-      font-size: 0.8rem;
-      transition: 0.3s;
-    }
-
-    .success-link:hover {
-      opacity: 0.7;
-    }
-
-    .loader {
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      border: 2px solid #333;
-      border-top: 2px solid #fff;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-right: 10px;
-    }
-
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-  </style>
+        input[type="file"] { display: none; }
+    </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
+<div class="vip-card">
+    <div class="header">
+        <h1>CS TOOL <span style="font-weight: 800;">PRO</span></h1>
+        <p>VIP CLOUD INFRASTRUCTURE</p>
+    </div>
 
-<div class="container">
-  <h2>CS TOOL</h2>
-  <p class="subtitle">HIGH-SPEED CLOUD UPLOADER</p>
-  
-  <div class="upload-area">
-    <label for="file" class="file-label" id="file-name">SELECT FILENAME</label>
-    <input type="file" id="file" onchange="updateFileName()">
-  </div>
+    <div class="upload-options">
+        <button class="opt-btn active" onclick="setMode('all')">All Files</button>
+        <button class="opt-btn" onclick="setMode('image')">Images Only</button>
+    </div>
 
-  <button id="upload-btn" onclick="uploadFile()">Execute Upload</button>
-  
-  <div id="status"></div>
+    <input type="file" id="file-all" onchange="fileSelected()">
+    <input type="file" id="file-img" accept="image/*" onchange="fileSelected()">
+
+    <div id="drop-zone" style="border: 1px dashed #222; padding: 30px; text-align: center; margin-bottom: 25px; cursor: pointer;" onclick="triggerInput()">
+        <span id="label-text" style="font-size: 12px; color: #555; letter-spacing: 1px;">TAP TO SELECT SOURCE</span>
+    </div>
+
+    <div class="progress-container" id="prog-cont">
+        <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+        <div class="progress-text">
+            <span id="status-msg">ENCRYPTING...</span>
+            <span id="percent">0%</span>
+        </div>
+    </div>
+
+    <button id="upload-btn" class="main-action-btn" onclick="startUpload()" disabled>Initialize Upload</button>
+
+    <div id="result-area">
+        <div style="font-size: 10px; color: #666; margin-bottom: 10px; letter-spacing: 2px;">UPLOAD SECURED:</div>
+        <div class="link-box">
+            <div class="link-text" id="final-link">Generating...</div>
+            <button class="copy-btn" onclick="copyLink()">COPY</button>
+        </div>
+    </div>
 </div>
 
 <script>
-function updateFileName() {
-    const input = document.getElementById('file');
-    const label = document.getElementById('file-name');
-    label.innerText = input.files[0] ? input.files[0].name.toUpperCase() : "SELECT FILENAME";
-}
+    let currentMode = 'all';
+    let selectedFile = null;
 
-async function uploadFile() {
-    const a = "ghp_xog8jCJC"; 
-    const b = "BgFMKBzd24oeFIP";
-    const c = "9luHIcF0b9k7v";
-    const token = a + b + c;
-
-    const username = "Faizanand";
-    const repo = "New-upload"; 
-
-    const fileInput = document.getElementById("file");
-    const btn = document.getElementById("upload-btn");
-    const statusDiv = document.getElementById("status");
-    const file = fileInput.files[0];
-
-    if(!file) {
-        statusDiv.innerHTML = "<span style='color: #ff4444;'>ERROR: NO FILE SELECTED</span>";
-        return;
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        selectedFile = null;
+        document.getElementById('label-text').innerText = "TAP TO SELECT SOURCE";
+        document.getElementById('upload-btn').disabled = true;
     }
 
-    // UI Updates
-    btn.disabled = true;
-    btn.innerText = "UPLOADING...";
-    statusDiv.innerHTML = '<div class="loader"></div> PROCESSING REQUEST';
+    function triggerInput() {
+        if(currentMode === 'all') document.getElementById('file-all').click();
+        else document.getElementById('file-img').click();
+    }
 
-    const reader = new FileReader();
-    reader.onload = async function() {
-        const base64 = reader.result.split(",")[1];
-
-        try {
-            const response = await fetch(
-                `https://api.github.com/repos/${username}/${repo}/contents/${file.name}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `token ${token}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: "System Upload: CS-TOOL-PRO",
-                        content: base64
-                    })
-                }
-            );
-
-            if(response.ok) {
-                const finalLink = `https://raw.githubusercontent.com/${username}/${repo}/main/${file.name}`;
-                statusDiv.innerHTML = `
-                    <span style='color: #fff;'>SUCCESSFULLY DEPLOYED</span><br>
-                    <a href="${finalLink}" class="success-link" target="_blank">ACCESS FILENAME</a>
-                `;
-                btn.innerText = "UPLOAD COMPLETE";
-            } else {
-                const err = await response.json();
-                statusDiv.innerHTML = `<span style='color: #ff4444;'>FAILED: ${err.message.toUpperCase()}</span>`;
-                btn.disabled = false;
-                btn.innerText = "RETRY UPLOAD";
-            }
-        } catch (e) {
-            statusDiv.innerHTML = "<span style='color: #ff4444;'>NETWORK AUTHENTICATION ERROR</span>";
-            btn.disabled = false;
-            btn.innerText = "RETRY UPLOAD";
+    function fileSelected() {
+        const input = currentMode === 'all' ? document.getElementById('file-all') : document.getElementById('file-img');
+        selectedFile = input.files[0];
+        if(selectedFile) {
+            document.getElementById('label-text').innerText = selectedFile.name.toUpperCase();
+            document.getElementById('label-text').style.color = "#fff";
+            document.getElementById('upload-btn').disabled = false;
         }
-    };
-    reader.readAsDataURL(file);
-}
+    }
+
+    async function startUpload() {
+        const a = "ghp_xog8jCJC"; 
+        const b = "BgFMKBzd24oeFIP";
+        const c = "9luHIcF0b9k7v";
+        const token = a + b + c;
+
+        const btn = document.getElementById('upload-btn');
+        const progCont = document.getElementById('prog-cont');
+        const fill = document.getElementById('fill');
+        const statusMsg = document.getElementById('status-msg');
+        const percent = document.getElementById('percent');
+
+        btn.disabled = true;
+        btn.innerText = "PROCESSING...";
+        progCont.style.display = "block";
+        
+        // Step 1: Local Reading Progress
+        statusMsg.innerText = "READING DATA...";
+        let p = 0;
+        let interval = setInterval(() => {
+            p += 5;
+            fill.style.width = p + "%";
+            percent.innerText = p + "%";
+            if(p >= 90) clearInterval(interval);
+        }, 50);
+
+        const reader = new FileReader();
+        reader.onload = async function() {
+            const base64 = reader.result.split(",")[1];
+            statusMsg.innerText = "UPLOADING TO SERVER...";
+
+            try {
+                const response = await fetch(
+                    `https://api.github.com/repos/Faizanand/New-upload/contents/${selectedFile.name}`,
+                    {
+                        method: "PUT",
+                        headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
+                        body: JSON.stringify({ message: "VIP Upload", content: base64 })
+                    }
+                );
+
+                if(response.ok) {
+                    clearInterval(interval);
+                    fill.style.width = "100%";
+                    percent.innerText = "100%";
+                    statusMsg.innerText = "SUCCESS";
+                    
+                    const link = `https://raw.githubusercontent.com/Faizanand/New-upload/main/${selectedFile.name}`;
+                    document.getElementById('final-link').innerText = link;
+                    document.getElementById('result-area').style.display = "block";
+                    btn.innerText = "UPLOAD FINISHED";
+                } else {
+                    throw new Error("API Error");
+                }
+            } catch (e) {
+                statusMsg.innerText = "ERROR OCCURRED";
+                statusMsg.style.color = "red";
+                btn.disabled = false;
+                btn.innerText = "RETRY";
+            }
+        };
+        reader.readAsDataURL(selectedFile);
+    }
+
+    function copyLink() {
+        const link = document.getElementById('final-link').innerText;
+        navigator.clipboard.writeText(link);
+        const copyBtn = document.querySelector('.copy-btn');
+        copyBtn.innerText = "COPIED!";
+        copyBtn.style.background = "#00ff88";
+        setTimeout(() => {
+            copyBtn.innerText = "COPY";
+            copyBtn.style.background = "#fff";
+        }, 2000);
+    }
 </script>
 
 </body>
