@@ -1,19 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Uploader</title>
+  <title>Heavy Uploader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a2e, #000);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      width: 90%;
+      max-width: 420px;
+      padding: 25px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 25px rgba(0,255,255,0.2);
+      text-align: center;
+      animation: pop 0.6s ease;
+    }
+
+    @keyframes pop {
+      from {transform: scale(0.8); opacity: 0;}
+      to {transform: scale(1); opacity: 1;}
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #00ffe1;
+      text-shadow: 0 0 10px #00ffe1;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 2px dashed #00ffe1;
+      background: transparent;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #00ffe1, #0077ff);
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #00ffe1;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #00ffe1;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    a {
+      color: #00ff88;
+      text-decoration: none;
+    }
+  </style>
 </head>
-<body style="background:black;color:white;font-family:sans-serif;text-align:center;padding-top:50px;">
 
-<h2>File Uploader</h2>
+<body>
 
-<input type="file" id="file">
+<div class="box">
 
-<br><br>
+  <h2>⚡ Heavy File Uploader</h2>
 
-<button onclick="uploadFile()">Upload</button>
+  <input type="file" id="file">
 
-<p id="status"></p>
+  <button onclick="uploadFile()">Upload Now</button>
+
+  <p id="status"></p>
+
+</div>
 
 <script>
 async function uploadFile() {
@@ -30,7 +109,7 @@ alert("File select kro");
 return;
 }
 
-document.getElementById("status").innerHTML = "Uploading...";
+document.getElementById("status").innerHTML = "Uploading... ⏳";
 
 const reader = new FileReader();
 
@@ -59,11 +138,11 @@ const link =
 `https://cdn.jsdelivr.net/gh/${username}/${repo}/uploads/${file.name}`;
 
 document.getElementById("status").innerHTML =
-`Uploaded <br><br>
-<a href="${link}" target="_blank" style="color:lime;">${link}</a>`;
+`✅ Uploaded Successfully<br><br>
+<a href="${link}" target="_blank">${link}</a>`;
 
 }else{
-document.getElementById("status").innerHTML = "Upload Failed";
+document.getElementById("status").innerHTML = "❌ Upload Failed";
 }
 
 };
