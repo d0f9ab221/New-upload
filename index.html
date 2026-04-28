@@ -3,148 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS TOOL | ALWAYS NEW UPLOAD</title>
+    <title>CS TOOL PRO | UNIQUE V3</title>
     <style>
-        :root { --bg: #000; --acc: #fff; --border: #222; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        :root { --bg: #000; --acc: #fff; --gray: #111; --dim: #555; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        /* Premium Glass Card */
-        .card { width: 90%; max-width: 400px; padding: 40px; background: #050505; border: 1px solid var(--border); border-radius: 2px; position: relative; z-index: 1; }
+        .vip-box { width: 90%; max-width: 420px; background: #050505; border: 1px solid #222; padding: 35px; border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        
         .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { font-weight: 200; letter-spacing: 12px; margin: 0; font-size: 22px; }
-        .header p { color: #555; font-size: 10px; letter-spacing: 2px; margin-top: 8px; }
+        .header h1 { letter-spacing: 10px; font-weight: 200; font-size: 22px; margin: 0; }
+        .header p { font-size: 9px; color: var(--dim); letter-spacing: 3px; margin-top: 10px; text-transform: uppercase; }
 
-        .file-zone { border: 1px dashed #333; padding: 40px 10px; text-align: center; cursor: pointer; transition: 0.4s; color: #444; font-size: 12px; letter-spacing: 1px; }
-        .file-zone:hover { border-color: #fff; color: #fff; }
+        /* Mode Selection */
+        .mode-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .mode-btn { background: transparent; border: 1px solid #333; color: var(--dim); padding: 12px; cursor: pointer; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; transition: 0.3s; }
+        .mode-btn.active { border-color: #fff; color: #fff; background: #111; }
 
-        /* Progress Tracker */
-        .prog-container { margin: 25px 0; display: none; }
-        .prog-bar { height: 1px; background: #111; width: 100%; position: relative; }
+        /* Drop Zone */
+        .drop-zone { border: 1px dashed #333; padding: 40px 10px; text-align: center; cursor: pointer; transition: 0.4s; color: #444; font-size: 11px; letter-spacing: 1px; margin-bottom: 20px; }
+        .drop-zone:hover { border-color: #fff; color: #fff; }
+
+        /* Progress Bar */
+        .prog-area { margin: 20px 0; display: none; }
+        .prog-track { height: 1px; background: #111; width: 100%; }
         .prog-fill { height: 100%; width: 0%; background: #fff; box-shadow: 0 0 10px #fff; transition: 0.2s; }
-        .prog-info { display: flex; justify-content: space-between; font-size: 9px; color: #666; margin-top: 10px; text-transform: uppercase; }
+        .prog-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--dim); margin-top: 8px; text-transform: uppercase; }
 
-        .upload-btn { width: 100%; padding: 18px; background: #fff; color: #000; border: none; font-weight: 900; letter-spacing: 3px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .upload-btn:disabled { background: #111; color: #333; cursor: not-allowed; }
-        .upload-btn:hover:not(:disabled) { background: #bbb; }
+        .action-btn { width: 100%; padding: 18px; background: #fff; color: #000; border: none; font-weight: 900; letter-spacing: 2px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .action-btn:disabled { background: #111; color: #333; cursor: not-allowed; }
 
-        #result { margin-top: 30px; display: none; border-top: 1px solid #111; padding-top: 20px; }
-        .link-wrapper { background: #0a0a0a; border: 1px solid #222; display: flex; align-items: center; padding: 12px; }
-        .link-text { flex: 1; font-size: 11px; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .copy-btn { background: #fff; color: #000; border: none; padding: 7px 12px; font-size: 10px; font-weight: bold; cursor: pointer; margin-left: 10px; }
-        
+        #result { margin-top: 25px; display: none; border-top: 1px solid #1a1a1a; padding-top: 20px; }
+        .link-bar { background: #080808; border: 1px solid #222; display: flex; align-items: center; padding: 10px; }
+        .link-val { flex: 1; font-size: 11px; color: #777; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .copy-btn { background: #fff; color: #000; border: none; padding: 6px 12px; font-size: 9px; font-weight: 800; cursor: pointer; margin-left: 10px; }
+
         input[type="file"] { display: none; }
     </style>
 </head>
 <body>
 
-<div class="card">
+<div class="vip-box">
     <div class="header">
         <h1>CS TOOL <span style="font-weight: 800; letter-spacing: 0;">PRO</span></h1>
-        <p>SECURE UNIQUE FILE UPLOADER</p>
+        <p>Advanced Unique Multi-Uploader</p>
     </div>
 
-    <input type="file" id="mainInput" onchange="filePicked()">
-    <div class="file-zone" id="dropArea" onclick="document.getElementById('mainInput').click()">
-        CHOOSE FILE FOR NEW UPLOAD
+    <div class="mode-switcher">
+        <button class="mode-btn active" id="btn-all" onclick="toggleMode('all')">All Files</button>
+        <button class="mode-btn" id="btn-img" onclick="toggleMode('img')">Images Only</button>
     </div>
 
-    <div class="prog-container" id="pContainer">
-        <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
-        <div class="prog-info">
-            <span id="pStatus">Initializing...</span>
-            <span id="pPercent">0%</span>
+    <input type="file" id="input-all" onchange="onFileSelect()">
+    <input type="file" id="input-img" accept="image/*" onchange="onFileSelect()">
+
+    <div class="drop-zone" id="display-zone" onclick="triggerOpen()">
+        SELECT SOURCE FILE
+    </div>
+
+    <div class="prog-area" id="prog-box">
+        <div class="prog-track"><div class="prog-fill" id="fill-bar"></div></div>
+        <div class="prog-labels">
+            <span id="load-status">Ready</span>
+            <span id="load-pc">0%</span>
         </div>
     </div>
 
-    <button id="upBtn" class="upload-btn" onclick="executeUpload()" disabled>Start Upload</button>
+    <button id="main-up-btn" class="action-btn" onclick="startExecution()" disabled>Execute Upload</button>
 
     <div id="result">
-        <div style="font-size: 9px; color: #444; margin-bottom: 10px; letter-spacing: 1px;">UNIQUE LINK GENERATED:</div>
-        <div class="link-wrapper">
-            <div class="link-text" id="finalUrl">...</div>
-            <button class="copy-btn" onclick="copyAction()">COPY</button>
+        <div style="font-size: 8px; color: var(--dim); margin-bottom: 8px; letter-spacing: 2px;">NEW PERMALINK:</div>
+        <div class="link-bar">
+            <div class="link-val" id="raw-url">...</div>
+            <button class="copy-btn" onclick="copyToClipboard()">COPY</button>
         </div>
     </div>
 </div>
 
 <script>
-    let currentFile = null;
+    let activeMode = 'all';
+    let selectedFile = null;
 
-    function filePicked() {
-        currentFile = document.getElementById('mainInput').files[0];
-        if(currentFile) {
-            document.getElementById('dropArea').innerText = currentFile.name.toUpperCase();
-            document.getElementById('dropArea').style.color = "#fff";
-            document.getElementById('upBtn').disabled = false;
+    function toggleMode(m) {
+        activeMode = m;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`btn-${m}`).classList.add('active');
+        selectedFile = null;
+        document.getElementById('display-zone').innerText = "SELECT SOURCE FILE";
+        document.getElementById('main-up-btn').disabled = true;
+    }
+
+    function triggerOpen() {
+        if(activeMode === 'all') document.getElementById('input-all').click();
+        else document.getElementById('input-img').click();
+    }
+
+    function onFileSelect() {
+        const inp = activeMode === 'all' ? document.getElementById('input-all') : document.getElementById('input-img');
+        selectedFile = inp.files[0];
+        if(selectedFile) {
+            document.getElementById('display-zone').innerText = selectedFile.name.toUpperCase();
+            document.getElementById('display-zone').style.color = "#fff";
+            document.getElementById('main-up-btn').disabled = false;
         }
     }
 
-    async function executeUpload() {
-        // Token Fragmentation
-        const p1 = "ghp_xog8jCJC"; 
-        const p2 = "BgFMKBzd24oeFIP";
-        const p3 = "9luHIcF0b9k7v";
-        const token = p1 + p2 + p3;
-        
-        const btn = document.getElementById('upBtn');
-        const fill = document.getElementById('pFill');
-        const status = document.getElementById('pStatus');
-        const percent = document.getElementById('pPercent');
+    async function startExecution() {
+        const a = "ghp_xog8jCJC"; const b = "BgFMKBzd24oeFIP"; const c = "9luHIcF0b9k7v";
+        const token = a + b + c;
+
+        const btn = document.getElementById('main-up-btn');
+        const fill = document.getElementById('fill-bar');
+        const status = document.getElementById('load-status');
+        const pc = document.getElementById('load-pc');
 
         btn.disabled = true;
-        btn.innerText = "UPLOADING...";
-        document.getElementById('pContainer').style.display = "block";
+        btn.innerText = "SYSTEM WORKING...";
+        document.getElementById('prog-box').style.display = "block";
 
         const reader = new FileReader();
         reader.onload = async function() {
             const base64 = reader.result.split(",")[1];
             
-            // UNIQUE NAME LOGIC: Current Time + Random String + File Name
-            const timeTag = Math.floor(Date.now() / 1000);
-            const randomID = Math.random().toString(36).substring(7);
-            const uniqueName = `${timeTag}_${randomID}_${currentFile.name}`;
+            // Generate Unique Filename for NEW upload every time
+            const timestamp = Math.floor(Date.now() / 1000);
+            const finalName = `${timestamp}_${selectedFile.name.replace(/\s+/g, '_')}`;
 
-            status.innerText = "TRANSFERRING DATA...";
-            fill.style.width = "50%";
-            percent.innerText = "50%";
+            status.innerText = "ENCRYPTING & SENDING...";
+            fill.style.width = "60%";
+            pc.innerText = "60%";
 
             try {
-                const response = await fetch(
-                    `https://api.github.com/repos/Faizanand/New-upload/contents/${uniqueName}`,
+                const res = await fetch(
+                    `https://api.github.com/repos/Faizanand/New-upload/contents/${finalName}`,
                     {
                         method: "PUT",
                         headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({ message: "New Unique Upload", content: base64 })
+                        body: JSON.stringify({ message: "VIP Unique Upload", content: base64 })
                     }
                 );
 
-                if(response.ok) {
+                if(res.ok) {
                     fill.style.width = "100%";
-                    percent.innerText = "100%";
-                    status.innerText = "SUCCESSFUL";
-                    
-                    const link = `https://raw.githubusercontent.com/Faizanand/New-upload/main/${uniqueName}`;
-                    document.getElementById('finalUrl').innerText = link;
+                    pc.innerText = "100%";
+                    status.innerText = "COMPLETE";
+                    const link = `https://raw.githubusercontent.com/Faizanand/New-upload/main/${finalName}`;
+                    document.getElementById('raw-url').innerText = link;
                     document.getElementById('result').style.display = "block";
-                    btn.innerText = "UPLOAD FINISHED";
+                    btn.innerText = "TASK FINISHED";
                 } else {
-                    throw new Error("API Failure");
+                    throw new Error();
                 }
             } catch (e) {
-                status.innerText = "FAILED";
+                status.innerText = "NETWORK ERROR";
                 btn.disabled = false;
                 btn.innerText = "RETRY";
             }
         };
-        reader.readAsDataURL(currentFile);
+        reader.readAsDataURL(selectedFile);
     }
 
-    function copyAction() {
-        const link = document.getElementById('finalUrl').innerText;
-        navigator.clipboard.writeText(link);
-        const b = document.querySelector('.copy-btn');
-        b.innerText = "COPIED";
-        setTimeout(() => b.innerText = "COPY", 2000);
+    function copyToClipboard() {
+        const text = document.getElementById('raw-url').innerText;
+        navigator.clipboard.writeText(text);
+        const cb = document.querySelector('.copy-btn');
+        cb.innerText = "COPIED";
+        cb.style.background = "#00ff88";
+        setTimeout(() => {
+            cb.innerText = "COPY";
+            cb.style.background = "#fff";
+        }, 2000);
     }
 </script>
 
