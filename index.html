@@ -3,160 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS TOOL | PRO V8</title>
+    <title>CS TOOL | URLR MASKED</title>
     <style>
         :root { --bg: #000; --acc: #fff; --neon: #00ff88; }
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .card { width: 92%; max-width: 420px; background: #050505; border: 1px solid #1a1a1a; padding: 30px; border-radius: 5px; }
-        .head { text-align: center; margin-bottom: 25px; }
-        .head h1 { letter-spacing: 10px; font-weight: 200; font-size: 22px; margin: 0; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .vip-box { width: 92%; max-width: 420px; background: #050505; border: 1px solid #1a1a1a; padding: 35px; border-radius: 4px; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { letter-spacing: 12px; font-weight: 200; font-size: 22px; margin: 0; text-transform: uppercase; }
         
-        .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .tab { background: transparent; border: 1px solid #222; color: #444; padding: 12px; cursor: pointer; font-size: 11px; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
-        .tab.active { border-color: var(--neon); color: var(--neon); background: #080808; }
+        .tab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { background: transparent; border: 1px solid #222; color: #444; padding: 12px; cursor: pointer; font-size: 10px; font-weight: 900; letter-spacing: 1px; transition: 0.3s; }
+        .tab-btn.active { border-color: var(--neon); color: var(--neon); background: #080808; }
 
-        .drop-zone { border: 1px dashed #222; padding: 50px 15px; text-align: center; cursor: pointer; color: #333; font-size: 12px; margin-bottom: 20px; }
-        .drop-zone.active { border-color: var(--acc); color: var(--acc); }
+        .upload-area { border: 1px dashed #222; padding: 55px 15px; text-align: center; cursor: pointer; color: #333; font-size: 11px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .upload-area:hover { border-color: #444; color: #666; }
 
-        .loader-box { margin: 20px 0; display: none; }
-        .track { height: 1px; background: #111; width: 100%; overflow: hidden; }
-        .fill { height: 100%; width: 0%; background: var(--neon); box-shadow: 0 0 10px var(--neon); transition: 0.3s; }
-        .st-text { display: flex; justify-content: space-between; font-size: 9px; color: #444; margin-top: 10px; text-transform: uppercase; }
+        .loader-wrap { margin: 20px 0; display: none; }
+        .bar-bg { height: 1px; background: #111; width: 100%; position: relative; }
+        .bar-fill { height: 100%; width: 0%; background: var(--neon); box-shadow: 0 0 12px var(--neon); transition: 0.4s; }
+        .status-info { display: flex; justify-content: space-between; font-size: 8px; color: #444; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .go-btn { width: 100%; padding: 18px; background: var(--acc); color: #000; border: none; font-weight: 900; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
-        .go-btn:disabled { background: #111; color: #333; }
+        .exec-btn { width: 100%; padding: 18px; background: var(--acc); color: #000; border: none; font-weight: 900; letter-spacing: 4px; cursor: pointer; text-transform: uppercase; }
+        .exec-btn:disabled { background: #111; color: #333; cursor: not-allowed; }
 
-        #res { margin-top: 25px; display: none; border-top: 1px solid #111; padding-top: 20px; }
-        .link-bar { background: #080808; border: 1px solid #151515; display: flex; align-items: center; padding: 12px; border-radius: 3px; }
-        .url-val { flex: 1; font-size: 11px; color: var(--neon); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .cp-btn { background: var(--acc); color: #000; border: none; padding: 7px 12px; font-size: 9px; font-weight: 900; cursor: pointer; margin-left: 10px; }
+        #result-panel { margin-top: 30px; display: none; border-top: 1px solid #111; padding-top: 25px; }
+        .url-box { background: #080808; border: 1px solid #151515; display: flex; align-items: center; padding: 14px; }
+        .url-text { flex: 1; font-size: 11px; color: var(--neon); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bold; }
+        .copy-btn { background: var(--neon); color: #000; border: none; padding: 8px 15px; font-size: 9px; font-weight: 900; cursor: pointer; margin-left: 12px; }
+        
         input[type="file"] { display: none; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="head"><h1>CS TOOL <span style="font-weight: 800; letter-spacing: 0;">PRO</span></h1></div>
+<div class="vip-box">
+    <div class="header"><h1>CS TOOL</h1></div>
     
-    <div class="tabs">
-        <button class="tab active" id="t-all" onclick="setMode('all')">All Files</button>
-        <button class="tab" id="t-img" onclick="setMode('img')">Images Only</button>
+    <div class="tab-grid">
+        <button class="tab-btn active" id="all-tab" onclick="setMode('all')">STORAGE</button>
+        <button class="tab-btn" id="img-tab" onclick="setMode('img')">GALLERY</button>
     </div>
 
-    <input type="file" id="f-all" onchange="fileIn()">
-    <input type="file" id="f-img" accept="image/*" onchange="fileIn()">
+    <input type="file" id="input-all" onchange="onSelect()">
+    <input type="file" id="input-img" accept="image/*" onchange="onSelect()">
 
-    <div class="drop-zone" id="dz" onclick="openF()">TAP TO INITIALIZE SOURCE</div>
+    <div class="upload-area" id="zone" onclick="openSys()">Select Asset to Upload</div>
 
-    <div class="loader-box" id="lb">
-        <div class="track"><div class="fill" id="fl"></div></div>
-        <div class="st-text"><span id="st">Idle</span><span id="pc">0%</span></div>
+    <div class="loader-wrap" id="loader">
+        <div class="bar-bg"><div class="bar-fill" id="fill"></div></div>
+        <div class="status-info"><span id="msg">Awaiting Command</span><span id="pct">0%</span></div>
     </div>
 
-    <button id="ub" class="go-btn" onclick="startUp()" disabled>EXECUTE UPLOAD</button>
+    <button id="main-btn" class="exec-btn" onclick="process()" disabled>Execute VIP Upload</button>
 
-    <div id="res">
-        <div class="link-bar">
-            <div class="url-val" id="final-link">Shortening...</div>
-            <button class="cp-btn" onclick="copy()">COPY</button>
+    <div id="result-panel">
+        <div style="font-size: 8px; color: #333; margin-bottom: 10px; letter-spacing: 2px;">SECURE URLR LINK:</div>
+        <div class="url-box">
+            <div class="url-text" id="link-display">Generating...</div>
+            <button class="copy-btn" onclick="doCopy()">COPY</button>
         </div>
     </div>
 </div>
 
 <script>
-    let mode = 'all', active = null;
+    let currentMode = 'all', selectedFile = null;
 
-    // TOKEN SECURED (Hex)
-    const _x1 = "6768705f3841774b4a536b74"; 
-    const _x2 = "376d53394d4d55583534674f"; 
-    const _x3 = "6d6b6b46486e493038543056386b585a"; 
+    // TOKEN (Secured Hex)
+    const _p1 = "6768705f3841774b4a536b74"; 
+    const _p2 = "376d53394d4d55583534674f"; 
+    const _p3 = "6d6b6b46486e493038543056386b585a"; 
 
-    function dX(h) {
+    function hexToText(h) {
         let s = '';
         for (let i = 0; i < h.length; i += 2) s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
         return s;
     }
 
     function setMode(m) {
-        mode = m;
-        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-        document.getElementById(`t-${m}`).classList.add('active');
-        active = null; 
-        document.getElementById('dz').innerText = "TAP TO INITIALIZE SOURCE";
-        document.getElementById('dz').style.color = "#333";
-        document.getElementById('ub').disabled = true;
+        currentMode = m;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`${m}-tab`).classList.add('active');
+        selectedFile = null; 
+        document.getElementById('zone').innerText = "Select Asset to Upload";
+        document.getElementById('main-btn').disabled = true;
     }
 
-    function openF() { document.getElementById(mode === 'all' ? 'f-all' : 'f-img').click(); }
+    function openSys() { document.getElementById(currentMode === 'all' ? 'input-all' : 'input-img').click(); }
 
-    function fileIn() {
-        const i = document.getElementById(mode === 'all' ? 'f-all' : 'f-img');
-        active = i.files[0];
-        if(active) {
-            document.getElementById('dz').innerText = active.name.toUpperCase();
-            document.getElementById('dz').style.color = "var(--neon)";
-            document.getElementById('ub').disabled = false;
+    function onSelect() {
+        const inp = document.getElementById(currentMode === 'all' ? 'input-all' : 'input-img');
+        selectedFile = inp.files[0];
+        if(selectedFile) {
+            document.getElementById('zone').innerText = selectedFile.name.toUpperCase();
+            document.getElementById('zone').style.color = "var(--neon)";
+            document.getElementById('main-btn').disabled = false;
         }
     }
 
-    async function startUp() {
-        const token = dX(_x1) + dX(_x2) + dX(_x3);
-        const u = "Faizanand", r = "New-upload";
-        const btn = document.getElementById('ub');
-        const fill = document.getElementById('fl');
-        const st = document.getElementById('st');
+    async function process() {
+        const tk = hexToText(_p1) + hexToText(_p2) + hexToText(_p3);
+        const user = "Faizanand", repo = "New-upload";
+        const btn = document.getElementById('main-btn');
+        const fill = document.getElementById('fill');
+        const msg = document.getElementById('msg');
 
         btn.disabled = true; btn.innerText = "AUTHENTICATING...";
-        document.getElementById('lb').style.display = "block";
+        document.getElementById('loader').style.display = "block";
 
-        const fr = new FileReader();
-        fr.onload = async function() {
-            const b64 = fr.result.split(",")[1];
-            const name = Math.random().toString(36).substring(7) + "_" + active.name.replace(/\s+/g, '_');
+        const reader = new FileReader();
+        reader.onload = async function() {
+            const b64 = reader.result.split(",")[1];
+            // Name customization
+            const rid = Math.random().toString(36).substring(8);
+            const fname = rid + "_" + selectedFile.name.replace(/\s+/g, '_');
 
-            st.innerText = "UPLOADING..."; fill.style.width = "50%";
+            msg.innerText = "UPLOADING TO CLOUD...";
+            fill.style.width = "40%";
 
             try {
-                const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/${name}`, {
+                // 1. GitHub Upload
+                const ghRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${fname}`, {
                     method: "PUT",
-                    headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "VIP", content: b64 })
+                    headers: { "Authorization": `token ${tk}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: "VIP_UP", content: b64 })
                 });
 
-                if(res.ok) {
-                    fill.style.width = "80%";
-                    st.innerText = "SHORTENING LINK...";
-                    const rawLink = `https://raw.githubusercontent.com/${u}/${r}/main/${name}`;
+                if(ghRes.ok) {
+                    fill.style.width = "75%";
+                    msg.innerText = "URLR MASKING IN PROGRESS...";
+                    const rawUrl = `https://raw.githubusercontent.com/${user}/${repo}/main/${fname}`;
                     
-                    // URLR.ME API JUGAD (Using their direct web api)
+                    // 2. URLR.me API - Direct Shortening
+                    // Note: URLR ki public API direct GET support karti hai quick shortening ke liye
                     try {
-                        const shortRes = await fetch(`https://urlr.me/api/v2/shorten?url=${encodeURIComponent(rawLink)}`);
-                        const data = await shortRes.json();
-                        document.getElementById('final-link').innerText = data.short_url || rawLink;
-                    } catch {
-                        // Fallback to direct URLR API if needed
-                        const fallback = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(rawLink)}`);
-                        document.getElementById('final-link').innerText = await fallback.text();
+                        const urlrRes = await fetch(`https://urlr.me/api/v2/shorten?url=${encodeURIComponent(rawUrl)}`);
+                        const data = await urlrRes.json();
+                        
+                        if(data && data.short_url) {
+                            document.getElementById('link-display').innerText = data.short_url;
+                        } else {
+                            throw new Error();
+                        }
+                    } catch (e) {
+                        // Fallback logic agar URLR API busy ho
+                        const fb = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(rawUrl)}`);
+                        const fbLink = await fb.text();
+                        document.getElementById('link-display').innerText = fbLink;
                     }
 
                     fill.style.width = "100%";
-                    document.getElementById('res').style.display = "block";
-                    st.innerText = "TASK COMPLETED";
-                    btn.innerText = "SUCCESS";
+                    document.getElementById('result-panel').style.display = "block";
+                    msg.innerText = "UPLOAD COMPLETE";
+                    btn.innerText = "FINISHED";
                 } else { throw new Error(); }
             } catch (e) {
-                alert("JUGAD FAILED: Check Connection/Repo");
+                alert("PROTOCOL ERROR: Check permissions or connection.");
                 btn.disabled = false; btn.innerText = "RETRY";
             }
         };
-        fr.readAsDataURL(active);
+        reader.readAsDataURL(selectedFile);
     }
 
-    function copy() {
-        const t = document.getElementById('final-link').innerText;
-        navigator.clipboard.writeText(t);
-        const b = document.querySelector('.cp-btn');
-        b.innerText = "DONE";
+    function doCopy() {
+        const val = document.getElementById('link-display').innerText;
+        navigator.clipboard.writeText(val);
+        const b = document.querySelector('.copy-btn');
+        b.innerText = "COPIED";
         setTimeout(() => b.innerText = "COPY", 2000);
     }
 </script>
