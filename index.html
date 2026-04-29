@@ -3,65 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS TOOL | JUGAD V7</title>
+    <title>CS TOOL | PRO V8</title>
     <style>
         :root { --bg: #000; --acc: #fff; --neon: #00ff88; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { width: 92%; max-width: 420px; background: #050505; border: 1px solid #1a1a1a; padding: 30px; border-radius: 5px; }
+        .head { text-align: center; margin-bottom: 25px; }
+        .head h1 { letter-spacing: 10px; font-weight: 200; font-size: 22px; margin: 0; }
         
-        .box { width: 90%; max-width: 400px; padding: 40px; background: #050505; border: 1px solid #1a1a1a; position: relative; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        h1 { letter-spacing: 15px; font-weight: 200; font-size: 18px; text-align: center; margin-bottom: 30px; color: var(--acc); }
+        .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .tab { background: transparent; border: 1px solid #222; color: #444; padding: 12px; cursor: pointer; font-size: 11px; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
+        .tab.active { border-color: var(--neon); color: var(--neon); background: #080808; }
 
-        .file-zone { border: 1px dashed #222; padding: 50px 10px; text-align: center; cursor: pointer; color: #444; font-size: 11px; margin-bottom: 25px; transition: 0.3s; }
-        .file-zone:hover { border-color: var(--neon); color: var(--neon); }
+        .drop-zone { border: 1px dashed #222; padding: 50px 15px; text-align: center; cursor: pointer; color: #333; font-size: 12px; margin-bottom: 20px; }
+        .drop-zone.active { border-color: var(--acc); color: var(--acc); }
 
-        /* VIP Loading Bar */
-        .loader-container { margin: 20px 0; display: none; }
-        .loader-track { height: 2px; background: #111; width: 100%; position: relative; overflow: hidden; }
-        .loader-fill { height: 100%; width: 0%; background: var(--neon); box-shadow: 0 0 15px var(--neon); transition: 0.4s; }
+        .loader-box { margin: 20px 0; display: none; }
+        .track { height: 1px; background: #111; width: 100%; overflow: hidden; }
+        .fill { height: 100%; width: 0%; background: var(--neon); box-shadow: 0 0 10px var(--neon); transition: 0.3s; }
+        .st-text { display: flex; justify-content: space-between; font-size: 9px; color: #444; margin-top: 10px; text-transform: uppercase; }
 
-        .btn { width: 100%; padding: 18px; background: var(--acc); color: #000; border: none; font-weight: 900; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn:disabled { background: #111; color: #333; }
+        .go-btn { width: 100%; padding: 18px; background: var(--acc); color: #000; border: none; font-weight: 900; letter-spacing: 3px; cursor: pointer; text-transform: uppercase; }
+        .go-btn:disabled { background: #111; color: #333; }
 
-        #result { margin-top: 30px; display: none; text-align: center; }
-        .link-card { background: #080808; border: 1px solid #151515; padding: 15px; display: flex; align-items: center; justify-content: space-between; }
-        .link-val { font-size: 11px; color: var(--neon); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .copy { background: var(--neon); color: #000; border: none; padding: 8px 15px; font-size: 10px; font-weight: 900; cursor: pointer; margin-left: 10px; }
-        
+        #res { margin-top: 25px; display: none; border-top: 1px solid #111; padding-top: 20px; }
+        .link-bar { background: #080808; border: 1px solid #151515; display: flex; align-items: center; padding: 12px; border-radius: 3px; }
+        .url-val { flex: 1; font-size: 11px; color: var(--neon); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .cp-btn { background: var(--acc); color: #000; border: none; padding: 7px 12px; font-size: 9px; font-weight: 900; cursor: pointer; margin-left: 10px; }
         input[type="file"] { display: none; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h1>CS TOOL</h1>
+<div class="card">
+    <div class="head"><h1>CS TOOL <span style="font-weight: 800; letter-spacing: 0;">PRO</span></h1></div>
     
-    <input type="file" id="realInput" onchange="picked()">
-    <div class="file-zone" id="dz" onclick="document.getElementById('realInput').click()">
-        SELECT VIP SOURCE
+    <div class="tabs">
+        <button class="tab active" id="t-all" onclick="setMode('all')">All Files</button>
+        <button class="tab" id="t-img" onclick="setMode('img')">Images Only</button>
     </div>
 
-    <div class="loader-container" id="lc">
-        <div class="loader-track"><div class="loader-fill" id="lf"></div></div>
-        <div style="display:flex; justify-content:space-between; font-size:8px; color:#444; margin-top:10px; letter-spacing:2px;">
-            <span id="stat">WAITING...</span>
-            <span id="perc">0%</span>
-        </div>
+    <input type="file" id="f-all" onchange="fileIn()">
+    <input type="file" id="f-img" accept="image/*" onchange="fileIn()">
+
+    <div class="drop-zone" id="dz" onclick="openF()">TAP TO INITIALIZE SOURCE</div>
+
+    <div class="loader-box" id="lb">
+        <div class="track"><div class="fill" id="fl"></div></div>
+        <div class="st-text"><span id="st">Idle</span><span id="pc">0%</span></div>
     </div>
 
-    <button id="upb" class="btn" onclick="go()" disabled>EXECUTE</button>
+    <button id="ub" class="go-btn" onclick="startUp()" disabled>EXECUTE UPLOAD</button>
 
-    <div id="result">
-        <div class="link-card">
-            <div class="link-val" id="fUrl">Generating...</div>
-            <button class="copy" onclick="copy()">COPY</button>
+    <div id="res">
+        <div class="link-bar">
+            <div class="url-val" id="final-link">Shortening...</div>
+            <button class="cp-btn" onclick="copy()">COPY</button>
         </div>
     </div>
 </div>
 
 <script>
-    let file = null;
+    let mode = 'all', active = null;
 
-    // TOKEN JUGAD (Hex Obfuscation)
+    // TOKEN SECURED (Hex)
     const _x1 = "6768705f3841774b4a536b74"; 
     const _x2 = "376d53394d4d55583534674f"; 
     const _x3 = "6d6b6b46486e493038543056386b585a"; 
@@ -72,36 +77,44 @@
         return s;
     }
 
-    function picked() {
-        file = document.getElementById('realInput').files[0];
-        if(file) {
-            document.getElementById('dz').innerText = file.name.toUpperCase();
+    function setMode(m) {
+        mode = m;
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.getElementById(`t-${m}`).classList.add('active');
+        active = null; 
+        document.getElementById('dz').innerText = "TAP TO INITIALIZE SOURCE";
+        document.getElementById('dz').style.color = "#333";
+        document.getElementById('ub').disabled = true;
+    }
+
+    function openF() { document.getElementById(mode === 'all' ? 'f-all' : 'f-img').click(); }
+
+    function fileIn() {
+        const i = document.getElementById(mode === 'all' ? 'f-all' : 'f-img');
+        active = i.files[0];
+        if(active) {
+            document.getElementById('dz').innerText = active.name.toUpperCase();
             document.getElementById('dz').style.color = "var(--neon)";
-            document.getElementById('upb').disabled = false;
+            document.getElementById('ub').disabled = false;
         }
     }
 
-    async function go() {
+    async function startUp() {
         const token = dX(_x1) + dX(_x2) + dX(_x3);
         const u = "Faizanand", r = "New-upload";
-        
-        const btn = document.getElementById('upb');
-        const fill = document.getElementById('lf');
-        const stat = document.getElementById('stat');
-        const perc = document.getElementById('perc');
+        const btn = document.getElementById('ub');
+        const fill = document.getElementById('fl');
+        const st = document.getElementById('st');
 
-        btn.disabled = true; btn.innerText = "UPLOADING...";
-        document.getElementById('lc').style.display = "block";
+        btn.disabled = true; btn.innerText = "AUTHENTICATING...";
+        document.getElementById('lb').style.display = "block";
 
         const fr = new FileReader();
         fr.onload = async function() {
             const b64 = fr.result.split(",")[1];
-            // JUGAD: Short unique name logic
-            const id = Math.random().toString(36).substring(7);
-            const name = id + "_" + file.name.replace(/\s+/g, '_');
+            const name = Math.random().toString(36).substring(7) + "_" + active.name.replace(/\s+/g, '_');
 
-            stat.innerText = "BYPASSING...";
-            fill.style.width = "60%"; perc.innerText = "60%";
+            st.innerText = "UPLOADING..."; fill.style.width = "50%";
 
             try {
                 const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/${name}`, {
@@ -111,30 +124,38 @@
                 });
 
                 if(res.ok) {
-                    fill.style.width = "100%"; perc.innerText = "100%";
-                    stat.innerText = "SUCCESS";
+                    fill.style.width = "80%";
+                    st.innerText = "SHORTENING LINK...";
+                    const rawLink = `https://raw.githubusercontent.com/${u}/${r}/main/${name}`;
                     
-                    // FINAL JUGAD LINK
-                    // Isme hum "raw.githubusercontent" ki jagah Pages wala link use kar rahe hain
-                    // Jo dekhne mein kafi clean hai
-                    const link = `https://${u}.github.io/${r}/${name}`;
-                    
-                    document.getElementById('fUrl').innerText = link;
-                    document.getElementById('result').style.display = "block";
-                    btn.innerText = "COMPLETED";
+                    // URLR.ME API JUGAD (Using their direct web api)
+                    try {
+                        const shortRes = await fetch(`https://urlr.me/api/v2/shorten?url=${encodeURIComponent(rawLink)}`);
+                        const data = await shortRes.json();
+                        document.getElementById('final-link').innerText = data.short_url || rawLink;
+                    } catch {
+                        // Fallback to direct URLR API if needed
+                        const fallback = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(rawLink)}`);
+                        document.getElementById('final-link').innerText = await fallback.text();
+                    }
+
+                    fill.style.width = "100%";
+                    document.getElementById('res').style.display = "block";
+                    st.innerText = "TASK COMPLETED";
+                    btn.innerText = "SUCCESS";
                 } else { throw new Error(); }
             } catch (e) {
-                alert("JUGAD FAILED: Check Repo Public or Private");
+                alert("JUGAD FAILED: Check Connection/Repo");
                 btn.disabled = false; btn.innerText = "RETRY";
             }
         };
-        fr.readAsDataURL(file);
+        fr.readAsDataURL(active);
     }
 
     function copy() {
-        const t = document.getElementById('fUrl').innerText;
+        const t = document.getElementById('final-link').innerText;
         navigator.clipboard.writeText(t);
-        const b = document.querySelector('.copy');
+        const b = document.querySelector('.cp-btn');
         b.innerText = "DONE";
         setTimeout(() => b.innerText = "COPY", 2000);
     }
