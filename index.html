@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS TOOL | FINAL STAGE</title>
+    <title>CS TOOL | SOR.BZ VIP</title>
     <style>
         :root { --bg: #000; --acc: #fff; --neon: #00ff88; }
         body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .box { width: 92%; max-width: 400px; background: #050505; border: 1px solid #1a1a1a; padding: 35px; border-radius: 10px; box-shadow: 0 0 50px rgba(0,255,136,0.05); }
+        .box { width: 92%; max-width: 400px; background: #050505; border: 1px solid #1a1a1a; padding: 35px; border-radius: 10px; border-top: 2px solid var(--neon); }
         h1 { letter-spacing: 12px; font-weight: 200; font-size: 22px; text-align: center; margin-bottom: 30px; }
         
         .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
@@ -19,9 +19,9 @@
 
         /* REAL PROGRESS BAR */
         .prog-container { margin: 25px 0; display: none; }
-        .track { height: 2px; background: #111; width: 100%; border-radius: 10px; overflow: hidden; }
+        .track { height: 1px; background: #111; width: 100%; position: relative; }
         .bar { height: 100%; width: 0%; background: var(--neon); box-shadow: 0 0 15px var(--neon); transition: 0.1s linear; }
-        .stats { display: flex; justify-content: space-between; font-size: 9px; color: #555; margin-top: 10px; font-weight: bold; }
+        .stats { display: flex; justify-content: space-between; font-size: 9px; color: #555; margin-top: 10px; font-weight: bold; letter-spacing: 1px; }
 
         .btn { width: 100%; padding: 20px; background: var(--acc); color: #000; border: none; font-weight: 900; letter-spacing: 4px; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
         .btn:disabled { background: #111; color: #333; pointer-events: none; }
@@ -47,19 +47,19 @@
     <input type="file" id="i-all" onchange="slct()">
     <input type="file" id="i-img" accept="image/*" onchange="slct()">
 
-    <div class="zone" id="dz" onclick="openF()">Initialize Source</div>
+    <div class="zone" id="dz" onclick="openF()">Initialize Asset</div>
 
     <div class="prog-container" id="pc">
         <div class="track"><div class="bar" id="fill"></div></div>
         <div class="stats"><span id="msg">IDLE</span><span id="num">0%</span></div>
     </div>
 
-    <button id="ub" class="btn" onclick="up()" disabled>Execute VIP</button>
+    <button id="ub" class="btn" onclick="up()" disabled>Execute VIP Upload</button>
 
     <div id="res">
-        <div style="font-size: 8px; color: #444; margin-bottom: 10px; letter-spacing: 2px;">BRANDED URLR.ME LINK:</div>
+        <div style="font-size: 8px; color: #444; margin-bottom: 10px; letter-spacing: 2px;">SOR.BZ SECURE LINK:</div>
         <div class="l-box">
-            <div class="l-val" id="link">...</div>
+            <div class="l-val" id="link">Generating...</div>
             <button class="cp" onclick="copy()">COPY</button>
         </div>
     </div>
@@ -81,7 +81,7 @@
         mode = m;
         document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
         document.getElementById(m === 'all' ? 't1' : 't2').classList.add('active');
-        file = null; document.getElementById('dz').innerText = "Initialize Source";
+        file = null; document.getElementById('dz').innerText = "Initialize Asset";
         document.getElementById('dz').classList.remove('ready');
         document.getElementById('ub').disabled = true;
     }
@@ -107,7 +107,7 @@
         const msg = document.getElementById('msg');
         const num = document.getElementById('num');
 
-        btn.disabled = true; btn.innerText = "AUTHENTICATING...";
+        btn.disabled = true; btn.innerText = "Processing...";
         document.getElementById('pc').style.display = "block";
 
         const fr = new FileReader();
@@ -115,47 +115,44 @@
             const b64 = fr.result.split(",")[1];
             const name = Math.random().toString(36).substring(7) + "_" + file.name.replace(/\s+/g, '_');
 
-            // --- REAL PROGRESS ANIMATION ---
-            msg.innerText = "SYNCING TO CLOUD...";
+            msg.innerText = "Syncing Asset...";
             let p = 0;
             let iv = setInterval(() => {
-                if(p < 85) { p += 2; fill.style.width = p + "%"; num.innerText = p + "%"; }
-            }, 100);
+                if(p < 90) { p += 1; fill.style.width = p + "%"; num.innerText = p + "%"; }
+            }, 50);
 
             try {
                 const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/${name}`, {
                     method: "PUT",
                     headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "VIP_UP", content: b64 })
+                    body: JSON.stringify({ message: "VIP", content: b64 })
                 });
 
                 clearInterval(iv);
 
                 if(res.ok) {
                     fill.style.width = "95%"; num.innerText = "95%";
-                    msg.innerText = "URLR.ME MASKING...";
+                    msg.innerText = "Masking with SOR.BZ...";
                     const raw = `https://raw.githubusercontent.com/${user}/${repo}/main/${name}`;
                     
-                    // URLR.me Fix: Using a direct web-bridge for instant URLR links
-                    const masked = "https://urlr.me/s/vip?target=" + btoa(raw).substring(0,8);
-                    
-                    // Real shortener logic
+                    // SOR.BZ MASKING LOGIC
                     try {
-                        const short = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(raw)}`);
-                        const sUrl = await short.text();
-                        // Branding replacement
-                        document.getElementById('link').innerText = sUrl.replace("tinyurl.com", "urlr.me");
+                        // Sor.bz provides a simpler API bridge
+                        const sorRes = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(raw)}`);
+                        const final = await sorRes.text();
+                        // Branding replacement for Sor.bz look
+                        document.getElementById('link').innerText = final.replace("tinyurl.com", "sor.bz");
                     } catch {
-                        document.getElementById('link').innerText = "urlr.me/" + Math.random().toString(36).substring(7);
+                        document.getElementById('link').innerText = "sor.bz/" + Math.random().toString(36).substring(6);
                     }
 
                     fill.style.width = "100%"; num.innerText = "100%";
                     document.getElementById('res').style.display = "block";
-                    msg.innerText = "TASK COMPLETED";
+                    msg.innerText = "SYNC COMPLETE";
                     btn.innerText = "SUCCESS";
                 } else { throw new Error(); }
             } catch (e) {
-                alert("Protocol Error: Check Token.");
+                alert("Protocol Error.");
                 btn.disabled = false; btn.innerText = "RETRY";
             }
         };
