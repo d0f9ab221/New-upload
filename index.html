@@ -4,40 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CS TOOL | AUTO-SHORT</title>
+
+    <!-- DIRECT AUTO REDIRECT -->
+    <script>
+    const qp = new URLSearchParams(location.search);
+    const go = qp.get("go");
+
+    if(go){
+        try{
+            const real = atob(go);
+            location.replace(real);
+        }catch(e){}
+    }
+    </script>
+
     <style>
         :root { --bg: #000; --acc: #fff; --neon: #00ff88; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--acc); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .box { width: 92%; max-width: 400px; background: #050505; border: 1px solid #1a1a1a; padding: 35px; border-radius: 5px; box-shadow: 0 10px 50px rgba(0,0,0,1); }
-        h1 { letter-spacing: 12px; font-weight: 200; font-size: 22px; text-align: center; margin-bottom: 30px; text-transform: uppercase; }
-        
-        .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; }
-        .tab { background: transparent; border: 1px solid #222; color: #444; padding: 12px; cursor: pointer; font-size: 10px; font-weight: 900; transition: 0.3s; }
-        .tab.active { border-color: var(--neon); color: var(--neon); background: #080808; }
 
-        .drop { border: 1px dashed #222; padding: 50px 10px; text-align: center; cursor: pointer; color: #333; font-size: 11px; margin-bottom: 25px; text-transform: uppercase; }
-        .drop.active { border-color: var(--neon); color: var(--neon); background: rgba(0,255,136,0.02); }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--acc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-        .loader { margin: 25px 0; display: none; }
-        .track { height: 2px; background: #111; width: 100%; position: relative; }
-        .fill { height: 100%; width: 0%; background: var(--neon); box-shadow: 0 0 15px var(--neon); transition: 0.2s; }
-        .info { display: flex; justify-content: space-between; font-size: 8px; color: #555; margin-top: 10px; font-weight: bold; letter-spacing: 2px; }
+        .box {
+            width: 92%;
+            max-width: 400px;
+            background: #050505;
+            border: 1px solid #1a1a1a;
+            padding: 35px;
+            border-radius: 5px;
+            box-shadow: 0 10px 50px rgba(0,0,0,1);
+        }
 
-        .go-btn { width: 100%; padding: 20px; background: var(--acc); color: #000; border: none; font-weight: 900; letter-spacing: 5px; cursor: pointer; text-transform: uppercase; }
-        .go-btn:disabled { background: #111; color: #333; cursor: not-allowed; }
+        h1 {
+            letter-spacing: 12px;
+            font-weight: 200;
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
 
-        #result { margin-top: 30px; display: none; border-top: 1px solid #111; padding-top: 25px; }
-        .l-box { background: #080808; border: 1px solid #1a1a1a; display: flex; align-items: center; padding: 15px; border-radius: 4px; }
-        .l-txt { flex: 1; font-size: 11px; color: var(--neon); font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: bold; cursor: pointer; text-decoration: none; }
-        .cp { background: var(--neon); color: #000; border: none; padding: 8px 15px; font-size: 9px; font-weight: 900; cursor: pointer; margin-left: 12px; }
-        
-        input[type="file"] { display: none; }
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tab {
+            background: transparent;
+            border: 1px solid #222;
+            color: #444;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 900;
+            transition: 0.3s;
+        }
+
+        .tab.active {
+            border-color: var(--neon);
+            color: var(--neon);
+            background: #080808;
+        }
+
+        .drop {
+            border: 1px dashed #222;
+            padding: 50px 10px;
+            text-align: center;
+            cursor: pointer;
+            color: #333;
+            font-size: 11px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .drop.active {
+            border-color: var(--neon);
+            color: var(--neon);
+            background: rgba(0,255,136,0.02);
+        }
+
+        .loader {
+            margin: 25px 0;
+            display: none;
+        }
+
+        .track {
+            height: 2px;
+            background: #111;
+            width: 100%;
+            position: relative;
+        }
+
+        .fill {
+            height: 100%;
+            width: 0%;
+            background: var(--neon);
+            box-shadow: 0 0 15px var(--neon);
+            transition: 0.2s;
+        }
+
+        .info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: #555;
+            margin-top: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .go-btn {
+            width: 100%;
+            padding: 20px;
+            background: var(--acc);
+            color: #000;
+            border: none;
+            font-weight: 900;
+            letter-spacing: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .go-btn:disabled {
+            background: #111;
+            color: #333;
+            cursor: not-allowed;
+        }
+
+        #result {
+            margin-top: 30px;
+            display: none;
+            border-top: 1px solid #111;
+            padding-top: 25px;
+        }
+
+        .l-box {
+            background: #080808;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .l-txt {
+            flex: 1;
+            font-size: 11px;
+            color: var(--neon);
+            font-family: monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .cp {
+            background: var(--neon);
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            font-size: 9px;
+            font-weight: 900;
+            cursor: pointer;
+            margin-left: 12px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
     </style>
 </head>
 <body>
 
 <div class="box">
     <h1>CS TOOL</h1>
-    
+
     <div class="tabs">
         <button class="tab active" id="b1" onclick="sm('all')">Storage</button>
         <button class="tab" id="b2" onclick="sm('img')">Gallery</button>
@@ -50,120 +202,220 @@
 
     <div class="loader" id="ldr">
         <div class="track"><div class="fill" id="fl"></div></div>
-        <div class="info"><span id="msg">Processing</span><span id="pct">0%</span></div>
+        <div class="info">
+            <span id="msg">Processing</span>
+            <span id="pct">0%</span>
+        </div>
     </div>
 
-    <button id="ub" class="go-btn" onclick="up()" disabled>Execute Upload</button>
+    <button id="ub" class="go-btn" onclick="up()" disabled>
+        Execute Upload
+    </button>
 
     <div id="result">
-        <div style="font-size: 8px; color: #333; margin-bottom: 10px; letter-spacing: 2px;">CLICK TO OPEN DIRECTLY:</div>
+        <div style="font-size:8px;color:#333;margin-bottom:10px;letter-spacing:2px;">
+            CLICK TO OPEN DIRECTLY:
+        </div>
+
         <div class="l-box">
-            <a href="#" target="_blank" class="l-txt" id="link-res">Generating...</a>
+            <a href="#" target="_blank" class="l-txt" id="link-res">
+                Generating...
+            </a>
+
             <button class="cp" onclick="cp()">COPY</button>
         </div>
     </div>
 </div>
 
 <script>
-    let mode = 'all', active = null;
 
-    // TOKEN SECURED (Hex)
-    const _t = ["6768705f3841774b4a536b74", "376d53394d4d55583534674f", "6d6b6b46486e493038543056386b585a"];
+let mode = 'all',
+    active = null;
 
-    function dx(h) {
-        let s = '';
-        for (let i = 0; i < h.length; i += 2) s += String.fromCharCode(parseInt(h.substr(i, 2), 16));
-        return s;
+// TOKEN SECURED (Hex)
+const _t = [
+"6768705f3841774b4a536b74",
+"376d53394d4d55583534674f",
+"6d6b6b46486e493038543056386b585a"
+];
+
+function dx(h){
+    let s = '';
+    for(let i = 0; i < h.length; i += 2){
+        s += String.fromCharCode(parseInt(h.substr(i,2),16));
     }
+    return s;
+}
 
-    function sm(m) {
-        mode = m;
-        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-        document.getElementById(m === 'all' ? 'b1' : 'b2').classList.add('active');
-        active = null; 
-        document.getElementById('dz').innerText = "Select VIP Asset";
-        document.getElementById('dz').classList.remove('active');
-        document.getElementById('ub').disabled = true;
+function sm(m){
+    mode = m;
+
+    document.querySelectorAll('.tab')
+    .forEach(b => b.classList.remove('active'));
+
+    document.getElementById(
+        m === 'all' ? 'b1' : 'b2'
+    ).classList.add('active');
+
+    active = null;
+
+    document.getElementById('dz').innerText =
+    "Select VIP Asset";
+
+    document.getElementById('dz')
+    .classList.remove('active');
+
+    document.getElementById('ub').disabled = true;
+}
+
+function tr(){
+    document.getElementById(
+        mode === 'all' ? 'f1' : 'f2'
+    ).click();
+}
+
+function pk(){
+
+    const i = document.getElementById(
+        mode === 'all' ? 'f1' : 'f2'
+    );
+
+    active = i.files[0];
+
+    if(active){
+
+        document.getElementById('dz')
+        .innerText = active.name.toUpperCase();
+
+        document.getElementById('dz')
+        .classList.add('active');
+
+        document.getElementById('ub').disabled = false;
     }
+}
 
-    function tr() { document.getElementById(mode === 'all' ? 'f1' : 'f2').click(); }
+async function up(){
 
-    function pk() {
-        const i = document.getElementById(mode === 'all' ? 'f1' : 'f2');
-        active = i.files[0];
-        if(active) {
-            document.getElementById('dz').innerText = active.name.toUpperCase();
-            document.getElementById('dz').classList.add('active');
-            document.getElementById('ub').disabled = false;
-        }
-    }
+    const tk = dx(_t[0]) + dx(_t[1]) + dx(_t[2]);
 
-    async function up() {
-        const tk = dx(_t[0]) + dx(_t[1]) + dx(_t[2]);
-        const u = "Faizanand", r = "New-upload";
-        const btn = document.getElementById('ub');
-        const fill = document.getElementById('fl');
-        const msg = document.getElementById('msg');
-        const pct = document.getElementById('pct');
+    const u = "Faizanand",
+          r = "New-upload";
 
-        btn.disabled = true; btn.innerText = "AUTHENTICATING...";
-        document.getElementById('ldr').style.display = "block";
+    const btn  = document.getElementById('ub');
+    const fill = document.getElementById('fl');
+    const msg  = document.getElementById('msg');
+    const pct  = document.getElementById('pct');
 
-        const fr = new FileReader();
-        fr.onload = async function() {
-            const b64 = fr.result.split(",")[1];
-            const name = Math.random().toString(36).substring(7) + "_" + active.name.replace(/\s+/g, '_');
+    btn.disabled = true;
+    btn.innerText = "AUTHENTICATING...";
 
-            msg.innerText = "UPLOADING...";
-            let p = 0;
-            let iv = setInterval(() => {
-                if(p < 90) { p += 1; fill.style.width = p + "%"; pct.innerText = p + "%"; }
-            }, 60);
+    document.getElementById('ldr').style.display = "block";
 
-            try {
-                const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/${name}`, {
-                    method: "PUT",
-                    headers: { "Authorization": `token ${tk}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: "VIP", content: b64 })
-                });
+    const fr = new FileReader();
 
-                clearInterval(iv);
+    fr.onload = async function(){
 
-                if(res.ok) {
-                    fill.style.width = "100%"; pct.innerText = "100%";
-                    msg.innerText = "AUTO SHORTENING...";
-                    const raw = `https://raw.githubusercontent.com/${u}/${r}/main/${name}`;
-                    
-                    // AUTO SHORTENING SYSTEM
-                    try {
-                        const short = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(raw)}`);
-                        const final = await short.text();
-                        const linkEl = document.getElementById('link-res');
-                        linkEl.innerText = final;
-                        linkEl.href = final; // Set href for direct opening
-                    } catch {
-                        document.getElementById('link-res').innerText = raw;
-                        document.getElementById('link-res').href = raw;
-                    }
+        const b64 = fr.result.split(",")[1];
 
-                    document.getElementById('result').style.display = "block";
-                    btn.innerText = "DONE";
-                } else { throw new Error(); }
-            } catch (e) {
-                alert("Protocol Failed.");
-                btn.disabled = false;
+        const name =
+        Math.random().toString(36).substring(7)
+        + "_"
+        + active.name.replace(/\s+/g,'_');
+
+        msg.innerText = "UPLOADING...";
+
+        let p = 0;
+
+        let iv = setInterval(() => {
+
+            if(p < 90){
+                p++;
+                fill.style.width = p + "%";
+                pct.innerText = p + "%";
             }
-        };
-        fr.readAsDataURL(active);
-    }
 
-    function cp() {
-        const v = document.getElementById('link-res').innerText;
-        navigator.clipboard.writeText(v);
-        const b = document.querySelector('.cp');
-        b.innerText = "DONE";
-        setTimeout(() => b.innerText = "COPY", 2000);
-    }
+        },60);
+
+        try{
+
+            const res = await fetch(
+            `https://api.github.com/repos/${u}/${r}/contents/${name}`,
+            {
+                method:"PUT",
+
+                headers:{
+                    "Authorization":`token ${tk}`,
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    message:"VIP",
+                    content:b64
+                })
+            });
+
+            clearInterval(iv);
+
+            if(res.ok){
+
+                fill.style.width = "100%";
+                pct.innerText = "100%";
+
+                msg.innerText = "MASKING LINK...";
+
+                const raw =
+                `https://raw.githubusercontent.com/${u}/${r}/main/${name}`;
+
+                // MASKED DIRECT LINK SYSTEM
+                const encoded = btoa(raw);
+
+                const final =
+                `${location.origin}${location.pathname}?go=${encoded}`;
+
+                const linkEl =
+                document.getElementById('link-res');
+
+                linkEl.innerText = final;
+                linkEl.href = final;
+
+                document.getElementById('result')
+                .style.display = "block";
+
+                btn.innerText = "DONE";
+
+            }else{
+                throw new Error();
+            }
+
+        }catch(e){
+
+            alert("Protocol Failed.");
+
+            btn.disabled = false;
+            btn.innerText = "Execute Upload";
+        }
+    };
+
+    fr.readAsDataURL(active);
+}
+
+function cp(){
+
+    const v =
+    document.getElementById('link-res').innerText;
+
+    navigator.clipboard.writeText(v);
+
+    const b = document.querySelector('.cp');
+
+    b.innerText = "DONE";
+
+    setTimeout(() => {
+        b.innerText = "COPY";
+    },2000);
+}
+
 </script>
+
 </body>
-</html>
+    </html>
